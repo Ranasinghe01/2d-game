@@ -151,7 +151,12 @@ function startInitialFall() {
         let onPlatform = false;
 
         for (const platform of platforms) {
-            if (characterElm.offsetTop >= (platform.offsetTop - characterElm.offsetHeight)) {
+
+            const platformPosition = platform.offsetTop - characterElm.offsetHeight;
+
+            if (characterElm.offsetTop >= platformPosition) {
+                console.log(characterElm.offsetTop);
+                console.log(platform.offsetTop);
                 if (characterElm.offsetLeft + characterElmWidth >= platform.offsetLeft &&
                     characterElm.offsetLeft + characterElmWidth <= platform.offsetLeft + platform.offsetWidth) {
                     onPlatform = true;
@@ -175,7 +180,7 @@ function doJump() {
     if (tmr4Jump) return;
     i = 0;
     jump = true;
-    const initialTop = characterElm.offsetTop;
+    const initialTop = characterElm.offsetTop + characterElm.offsetHeight;
 
     tmr4Jump = setInterval(() => {
         const top = initialTop - (Math.sin(toRadians(angle++))) * 200;
@@ -185,16 +190,20 @@ function doJump() {
 
         if (angle >= 90) {
             for (const platform of platforms) {
+
                 const platformEnd = platform.offsetLeft + platform.offsetWidth - characterElmWidth;
-                if (top >= platform.offsetTop - characterElm.offsetHeight)  {
-                    if (characterElm.offsetLeft >= platform.offsetLeft - characterElmWidth &&
-                        characterElm.offsetLeft <= platformEnd) {
-                        // console.log(top);
-                        // console.log(platform.offsetTop);
-                        // console.log(characterElm.offsetHeight);
+
+                if (top >= platform.offsetTop &&
+                    characterElm.offsetLeft >= platform.offsetLeft - characterElmWidth &&
+                    characterElm.offsetLeft <= platformEnd) {
+                    console.log("top " + top);
+                    console.log("platformTop " + platform.offsetTop);
+                    console.log("character Height " + characterElm.offsetHeight);
+                    console.log("character Left " + characterElm.offsetLeft);
+                    console.log("platform Left " + platform.offsetLeft);
+                    console.log("platform End " + platformEnd);
                         onPlatform = true;
                         break;
-                    }
                 }
             }
         }
@@ -238,16 +247,15 @@ function doRun(left) {
         }
         const left = characterElm.offsetLeft + dx;
         const characterPosition = characterElm.offsetTop + characterElm.offsetHeight;
-        console.log(characterPosition);
 
         for (const platform of platforms) {
             if (characterPosition === platform.offsetTop) {
                 if (left + characterElmWidth >= platform.offsetLeft + platform.offsetWidth ||
                     left + characterElmWidth <= platform.offsetLeft) {
-                    startInitialFall();
+                    setTimeout(startInitialFall, 30);
                 }
             }else {
-                startInitialFall();
+                setTimeout(startInitialFall, 30);
             }
         }
 
