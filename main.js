@@ -203,6 +203,7 @@ let tmr4Jump;
 let tmr4Run;
 let tmr4InitialFall;        // Define the interval variable globally
 let characterElmWidth = 65;
+let boxesLength = 5;
 
 //Rendering Function
 setInterval(() => {
@@ -419,13 +420,25 @@ function blastBox(){
             box.offsetLeft + box.offsetWidth >= characterElm.offsetLeft &&
             box.offsetTop - 40 <= characterElm.offsetTop &&
             box.offsetTop + box.offsetHeight + 20 >= characterElm.offsetTop + characterElm.offsetHeight) {
-            box.remove();
-            console.log("work");
+
+            box.classList.add('animate__animated', 'animate__fadeOut');
+
+            box.addEventListener('animationend', () => {
+                boxesLength = boxesLength - 1;
+                box.remove();
+            });
         }
     }
 }
 
 document.addEventListener('click',  doAttack);
+
+setInterval(() => {
+    console.log(boxes.length);
+    if (boxesLength === 0) {
+        document.getElementById('victory-screen').classList.remove('hide');
+    }
+}, 1);
 
 const resizeFn = () => {
     characterElm.style.top = `${innerHeight - 100 - characterElm.offsetHeight}px`;
