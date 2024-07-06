@@ -119,6 +119,7 @@ body {
   align-content: center;
   justify-content: center;
   background-color: rgba(0,0,0,0.8);
+  user-select: none;
 
   h1 {
     display: flex;

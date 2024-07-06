@@ -152,7 +152,7 @@ await new Promise((resolve) => {
             await document.querySelector('html').requestFullscreen( {
                 navigationUI: 'hide'
             });
-            document.querySelector('#start-screen').remove();
+            document.querySelector('#start-screen').classList.add('hide');
             resolve();
         });
 });
@@ -413,6 +413,7 @@ addEventListener('keyup', (e) => {
 function doAttack(){
     attack = true;
 }
+document.addEventListener('click',  doAttack);
 
 function blastBox(){
     for (const box of boxes) {
@@ -431,12 +432,14 @@ function blastBox(){
     }
 }
 
-document.addEventListener('click',  doAttack);
-
 setInterval(() => {
-    console.log(boxes.length);
     if (boxesLength === 0) {
-        document.getElementById('victory-screen').classList.remove('hide');
+        document.querySelector('#victory-screen').classList.remove('hide');
+        document.removeEventListener('click', doAttack);
+
+        document.querySelector('#victory-screen > button').addEventListener('click', () => {
+            location.reload();
+        });
     }
 }, 1);
 
@@ -449,7 +452,6 @@ const resizeFn = () => {
         characterElm.style.left = `${innerWidth - characterElmWidth - 1}px`;
     }
 }
-
 addEventListener('resize', resizeFn);
 
 
