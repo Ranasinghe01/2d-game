@@ -146,51 +146,54 @@ extraSmallPlatform4.style.top = '560px';
 const characterElm = document
     .querySelector('#character');
 
-await new Promise((resolve) => {
-    document.querySelector('#start-screen > button')
-        .addEventListener('click', async()=> {
-            await document.querySelector('html').requestFullscreen( {
-                navigationUI: 'hide'
-            });
-            document.querySelector('#start-screen').classList.add('hide');
-            resolve();
-        });
-});
-
-await new Promise(function (resolve) {
-
-    const images = ['/img/BG.png',
-        '/img/tile/Tile (1).png',
-        '/img/tile/Tile (2).png',
-        '/img/tile/Tile (3).png',
-        ...Array(10).fill('/img/character')
-            .flatMap((v, i) => [
-                `${v}/Jump__00${i}.png`,
-                `${v}/Attack__00${i}.png`,
-                `${v}/Idle__00${i}.png`,
-                `${v}/Run__00${i}.png`
-            ])
-    ];
-    for (const image of images) {
-        const img = new Image();
-        img.src = image;
-        img.addEventListener('load', progress);
-    }
-
-    const barElm = document.getElementById('bar');
-    const totalImages = images.length;
-
-    function progress() {
-        images.pop();
-        barElm.style.width = `${100 / totalImages * (totalImages - images.length)}%`
-        if (!images.length) {
-            setTimeout(() => {
-                document.getElementById('overlay').classList.add('hide');
+async function startScreen() {
+    await new Promise((resolve) => {
+        document.querySelector('#start-screen > button')
+            .addEventListener('click', async () => {
+                await document.querySelector('html').requestFullscreen({
+                    navigationUI: 'hide'
+                });
+                document.querySelector('#start-screen').classList.add('hide');
                 resolve();
-            }, 1000);
+            });
+    });
+
+    await new Promise(function (resolve) {
+
+        const images = ['/img/BG.png',
+            '/img/tile/Tile (1).png',
+            '/img/tile/Tile (2).png',
+            '/img/tile/Tile (3).png',
+            ...Array(10).fill('/img/character')
+                .flatMap((v, i) => [
+                    `${v}/Jump__00${i}.png`,
+                    `${v}/Attack__00${i}.png`,
+                    `${v}/Idle__00${i}.png`,
+                    `${v}/Run__00${i}.png`
+                ])
+        ];
+        for (const image of images) {
+            const img = new Image();
+            img.src = image;
+            img.addEventListener('load', progress);
         }
-    }
-});
+
+        const barElm = document.getElementById('bar');
+        const totalImages = images.length;
+
+        function progress() {
+            images.pop();
+            barElm.style.width = `${100 / totalImages * (totalImages - images.length)}%`
+            if (!images.length) {
+                setTimeout(() => {
+                    document.getElementById('overlay').classList.add('hide');
+                    resolve();
+                }, 1000);
+            }
+        }
+    });
+}
+startScreen();
 
 let dx = 0;         //Run
 let i = 0;          //Rendering

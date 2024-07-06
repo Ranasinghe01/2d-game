@@ -32,23 +32,23 @@
 
     &:first-child {
       width: 100px;
-      background-image: url("./img/tile/Tile (1).png");
+      background-image: url("public/img/tile/Tile (1).png");
     }
 
     &:nth-child(2) {
       flex-grow: 1;
-      background-image: url("./img/tile/Tile (2).png");
+      background-image: url("public/img/tile/Tile (2).png");
     }
 
     &:last-child {
       width: 100px;
-      background-image: url("./img/tile/Tile (3).png");
+      background-image: url("public/img/tile/Tile (3).png");
     }
   }
 }
 
 body {
-  background-image: url("./img/BG.png");
+  background-image: url("public/img/BG.png");
   background-position: top center;
   overflow: hidden;
 }
@@ -60,7 +60,7 @@ body {
   left: 0;
   right: 0;
   color: white;
-  background-image: url("./img/start-Bg.jpg");
+  background-image: url("public/img/start-Bg.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
@@ -216,17 +216,17 @@ body {
 
     &:first-child {
       width: 130px;
-      background-image: url("/img/tile/Tile (14).png");
+      background-image: url("/public/img/tile/Tile (14).png");
     }
 
     &:nth-child(2) {
       width: 130px;
-      background-image: url("/img/tile/Tile (15).png");
+      background-image: url("/public/img/tile/Tile (15).png");
     }
 
     &:nth-child(3) {
       width: 130px;
-      background-image: url("/img/tile/Tile (16).png");
+      background-image: url("/public/img/tile/Tile (16).png");
     }
   }
 }
@@ -242,12 +242,12 @@ body {
 
     &:first-child {
       width: 130px;
-      background-image: url("/img/tile/Tile (14).png");
+      background-image: url("/public/img/tile/Tile (14).png");
     }
 
     &:last-child {
       width: 130px;
-      background-image: url("/img/tile/Tile (16).png");
+      background-image: url("/public/img/tile/Tile (16).png");
     }
   }
 }
@@ -257,7 +257,7 @@ body {
   width: 110px;
   height: 110px;
   position: absolute;
-  background-image: url("/img/object/Crate.png");
+  background-image: url("/public/img/object/Crate.png");
   background-repeat: no-repeat;
 }
 
@@ -265,7 +265,7 @@ body {
   width: 110px;
   height: 80px;
   position: absolute;
-  background-image: url("/img/object/DeadBush.png");
+  background-image: url("/public/img/object/DeadBush.png");
   background-repeat: no-repeat;
 }
 
@@ -273,7 +273,7 @@ body {
   width: 190px;
   height: 90px;
   position: absolute;
-  background-image: url("/img/object/Bush (1).png");
+  background-image: url("/public/img/object/Bush (1).png");
   background-repeat: no-repeat;
 }
 
@@ -281,7 +281,7 @@ body {
   width: 100px;
   height: 70px;
   position: absolute;
-  background-image: url("/img/object/Bush (2).png");
+  background-image: url("/public/img/object/Bush (2).png");
   background-repeat: no-repeat;
 }
 
@@ -289,7 +289,7 @@ body {
   width: 280px;
   height: 250px;
   position: absolute;
-  background-image: url("/img/object/Tree.png");
+  background-image: url("/public/img/object/Tree.png");
   background-repeat: no-repeat;
 }
 
@@ -297,7 +297,7 @@ body {
   width: 50px;
   height: 50px;
   position: absolute;
-  background-image: url("/img/object/TombStone (1).png");
+  background-image: url("/public/img/object/TombStone (1).png");
   background-repeat: no-repeat;
 }
 
@@ -305,7 +305,7 @@ body {
   width: 60px;
   height: 80px;
   position: absolute;
-  background-image: url("/img/object/TombStone (2).png");
+  background-image: url("/public/img/object/TombStone (2).png");
   background-repeat: no-repeat;
 }
 
@@ -313,7 +313,7 @@ body {
   width: 90px;
   height: 100px;
   position: absolute;
-  background-image: url("/img/object/ArrowSign.png");
+  background-image: url("/public/img/object/ArrowSign.png");
   background-repeat: no-repeat;
 }
 
@@ -321,6 +321,6 @@ body {
   width: 100px;
   height: 100px;
   position: absolute;
-  background-image: url("/img/object/Sign.png");
+  background-image: url("/public/img/object/Sign.png");
   background-repeat: no-repeat;
 }
