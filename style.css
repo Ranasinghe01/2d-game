@@ -13,6 +13,7 @@
   position: absolute;
   left: 20px;
   top: -30px;
+  z-index: 1;
 }
 
 .rotate {

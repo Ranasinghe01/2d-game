@@ -27,36 +27,121 @@ const extraSmallPlatform3 = document
 const extraSmallPlatform4 = document
     .getElementById('extra-small-platform-4');
 
-const extraSmallPlatform5 = document
-    .getElementById('extra-small-platform-5');
+const box1 = document
+    .getElementById('box1');
 
+const box2 = document
+    .getElementById('box2');
+
+const box3 = document
+    .getElementById('box3');
+
+const box4 = document
+    .getElementById('box4');
+
+const box5 = document
+    .getElementById('box5');
+
+const bush1 = document
+    .getElementById('bush1');
+
+const deadBush = document
+    .getElementById('dead-bush');
+
+const sign = document
+    .getElementById('sign');
+
+const arrowSign = document
+    .getElementById('arrow-sign');
+
+const tree1 = document
+    .getElementById('tree1');
+
+const tree2 = document
+    .getElementById('tree2');
+
+const tombStone = document
+    .getElementById('tomb-stone');
+
+const tombStone2 = document
+    .getElementById('tomb-stone2');
+
+const tombStone3 = document
+    .getElementById('tomb-stone3');
+
+const bush2 = document
+    .getElementById('bush2');
+
+
+box1.style.top = '25px';
+box1.style.left = '850px';
+
+box2.style.top = '570px';
+box2.style.left = '1600px';
+
+box3.style.top = '460px';
+box3.style.left = '770px';
+
+box4.style.top = '690px';
+box4.style.left = '380px';
+
+box5.style.top = '895px';
+box5.style.left = '1400px';
+
+tree1.style.top = '760px';
+tree1.style.left = '600px';
+
+tree2.style.top = '760px';
+tree2.style.left = '1600px';
+
+bush1.style.top = '200px';
+bush1.style.left = '200px';
+
+deadBush.style.top = '390px';
+deadBush.style.left = '1440px';
+
+sign.style.top = '700px';
+sign.style.left = '950px';
+
+arrowSign.style.top = '200px';
+arrowSign.style.left = '120px';
+
+tombStone.style.top = '950px';
+tombStone.style.left = '600px';
+
+tombStone2.style.top = '925px';
+tombStone2.style.left = '850px';
+
+tombStone3.style.top = '950px';
+tombStone3.style.left = '1800px';
+
+bush2.style.top = '160px';
+bush2.style.left = '1750px';
 
 smallPlatform1.style.left = '800px';
-smallPlatform1.style.top = '100px';
+smallPlatform1.style.top = '130px';
 
 smallPlatform2.style.left = '1500px';
-smallPlatform2.style.top = '200px';
+smallPlatform2.style.top = '220px';
 
 smallPlatform3.style.left = '100px';
-smallPlatform3.style.top = '300px';
+smallPlatform3.style.top = '290px';
 
 smallPlatform4.style.left = '1400px';
-smallPlatform4.style.top = '700px';
+smallPlatform4.style.top = '670px';
 
 extraSmallPlatform1.style.left = '250px';
-extraSmallPlatform1.style.top = '800px';
+extraSmallPlatform1.style.top = '790px';
 
 extraSmallPlatform2.style.left = '900px';
-extraSmallPlatform2.style.top = '800px';
+extraSmallPlatform2.style.top = '790px';
 
-extraSmallPlatform3.style.left = '600px';
-extraSmallPlatform3.style.top = '250px';
+extraSmallPlatform3.style.left = '1300px';
+extraSmallPlatform3.style.top = '460px';
 
 extraSmallPlatform4.style.left = '700px';
-extraSmallPlatform4.style.top = '600px';
+extraSmallPlatform4.style.top = '560px';
 
-extraSmallPlatform5.style.left = '1300px';
-extraSmallPlatform5.style.top = '500px';
 
 const characterElm = document
     .querySelector('#character');
@@ -81,6 +166,7 @@ await new Promise(function (resolve) {
         ...Array(10).fill('/img/character')
             .flatMap((v, i) => [
                 `${v}/Jump__00${i}.png`,
+                `${v}/Attack__00${i}.png`,
                 `${v}/Idle__00${i}.png`,
                 `${v}/Run__00${i}.png`
             ])
@@ -111,6 +197,7 @@ let i = 0;          //Rendering
 let t = 0;          // Initialize t variable
 let run = false;
 let jump = false;
+let attack = false;
 let angle = 0;
 let tmr4Jump;
 let tmr4Run;
@@ -121,24 +208,40 @@ let characterElmWidth = 65;
 setInterval(() => {
 
     if (jump) {
+        characterElm.style.width = '120px';
+        characterElm.style.height = '120px';
         characterElm.style.backgroundImage = `url('/img/character/Jump__00${i++}.png')`;
         if (i === 10) i = 0;
 
+    } else if (attack) {
+            characterElm.style.backgroundImage = `url('/img/character/Attack__00${i++}.png')`;
+            characterElm.style.width = '140px';
+            characterElm.style.height = '140px';
+
+        if (i === 10) {
+            i = 0;
+            attack = false;
+        }
+
     } else if (!run) {
+        characterElm.style.width = '120px';
+        characterElm.style.height = '120px';
         characterElm.style.backgroundImage = `url('/img/character/Idle__00${i++}.png')`;
         if (i === 10) i = 0;
 
     } else {
+        characterElm.style.width = '120px';
+        characterElm.style.height = '120px';
         characterElm.style.backgroundImage = `url('/img/character/Run__00${i++}.png')`;
         if (i === 10) i = 0;
     }
 
-}, 1000 / 30);
+}, 60);
 
 
 const platforms = [
     mainPlatform, smallPlatform1, smallPlatform2, smallPlatform3, smallPlatform4, extraSmallPlatform1, extraSmallPlatform2, extraSmallPlatform3,
-    extraSmallPlatform4, extraSmallPlatform5
+    extraSmallPlatform4
 ];
 
 //Initially Fall Down
@@ -153,17 +256,15 @@ function startInitialFall() {
         for (const platform of platforms) {
 
             const platformPosition = platform.offsetTop - characterElm.offsetHeight;
-            // console.log(characterElm.offsetTop);
-            // console.log(platform.offsetTop);
 
             if (characterElm.offsetTop >= platformPosition &&
                 characterElm.offsetLeft + characterElmWidth >= platform.offsetLeft &&
                     characterElm.offsetLeft + characterElmWidth <= platform.offsetLeft + platform.offsetWidth) {
+                    // characterElm.style.top = `${platformPosition}px`;
                     onPlatform = true;
                     break;
             }
         }
-
         if (onPlatform) {
             clearInterval(tmr4InitialFall);
         }else {
@@ -177,18 +278,18 @@ startInitialFall();
 
 //Jump
 function doJump() {
+
     if (tmr4Jump) return;
     i = 0;
     jump = true;
-    const initialTop = characterElm.offsetTop - characterElm.offsetHeight;
+    const initialTop = characterElm.offsetTop;
 
     tmr4Jump = setInterval(() => {
-        const top = initialTop - (Math.sin(toRadians(angle++))) * 100;
+        const top = initialTop - (Math.sin(toRadians(angle++))) * 200;
         characterElm.style.top = `${top}px`;
 
         let onPlatform = false;
 
-        checkAngle:
         if (angle >= 90) {
 
             for (const platform of platforms) {
@@ -196,40 +297,25 @@ function doJump() {
                 const platformEnd = platform.offsetLeft + platform.offsetWidth - characterElmWidth;
                 const platformPosition = platform.offsetTop - characterElm.offsetHeight;
 
-                if (top <= platformPosition + platform.offsetHeight &&
-                    top >= platformPosition &&
-                    characterElm.offsetLeft >= platform.offsetLeft - characterElmWidth &&
-                    characterElm.offsetLeft <= platformEnd) {
-                    // console.log("top " + top);
-                    // console.log("platformTop " + platform.offsetTop);
-                    // console.log("character Height " + characterElm.offsetHeight);
-                    // console.log("character Left " + characterElm.offsetLeft);
-                    // console.log("platform Left " + platform.offsetLeft);
-                    // console.log("platform End " + platformEnd);
-                        onPlatform = true;
-                        break checkAngle;
-                }
-            }
-        }else {
+                if (characterElm.offsetLeft >= platform.offsetLeft - characterElmWidth &&
+                    characterElm.offsetLeft <= platformEnd &&
+                    top <= platformPosition + platform.offsetHeight &&
+                    top >= platformPosition) {
+                    characterElm.style.top = `${platformPosition}px`;
+                    onPlatform = true;
+                    break;
 
-            for (const platform of platforms) {
+                }else if (angle <= 90) {
 
-                const platformEnd = platform.offsetLeft + platform.offsetWidth - characterElmWidth;
-                const platformPosition = platform.offsetTop - characterElm.offsetHeight;
+                    for (const platform of platforms) {
 
-                if (platformPosition + platform.offsetHeight >= top &&
-                    characterElm.offsetLeft >= platform.offsetLeft - characterElmWidth &&
-                    characterElm.offsetLeft <= platformEnd) {
-                    // if (top < platformPosition + platform.offsetHeight) {
-                    //     const cTop = platformPosition + platform.offsetHeight;
-                    //     characterElm.style.top = `${cTop}px`;
-                    //     break checkAngle;
-                    // }
-                    // console.log("top " + top);
-                    // console.log("platformTop " + platform.offsetTop);
-
-                    // angle = 90;
-                    break checkAngle;
+                        if (top <= platformPosition + platform.offsetHeight &&
+                            characterElm.offsetLeft >= platform.offsetLeft + characterElmWidth &&
+                            characterElm.offsetLeft <= platformEnd) {
+                            angle = 90;
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -244,6 +330,7 @@ function doJump() {
 
     }, 1);
 }
+
 
 //Utility Fn (degree to radiant)
 function toRadians(angle) {
@@ -272,18 +359,17 @@ function doRun(left) {
             return;
         }
         const left = characterElm.offsetLeft + dx;
-        // const characterPosition = characterElm.offsetTop + characterElm.offsetHeight;
-        //
-        // for (const platform of platforms) {
-        //     if (characterPosition === platform.offsetTop) {
-        //         if (left + characterElmWidth >= platform.offsetLeft + platform.offsetWidth ||
-        //             left + characterElmWidth <= platform.offsetLeft) {
-        //             setTimeout(startInitialFall, 30);
-        //         }
-        //     }else {
-        //         setTimeout(startInitialFall, 30);
-        //     }
-        // }
+        const characterPosition = characterElm.offsetTop + characterElm.offsetHeight;
+
+        for (const platform of platforms) {
+            if (characterPosition === platform.offsetTop &&
+                (left + characterElmWidth >= platform.offsetLeft + platform.offsetWidth ||
+                    left <= platform.offsetLeft)) {
+                    console.log(platform.offsetLeft);
+                    console.log(characterElm.offsetLeft);
+                    startInitialFall();
+            }
+        }
 
         if (left + characterElmWidth >= innerWidth ||
         left <= 0) {
@@ -309,7 +395,6 @@ addEventListener('keydown', (e) => {
             break;
         case "Space":
             doJump();
-
     }
 });
 
@@ -320,6 +405,12 @@ addEventListener('keyup', (e) => {
             dx = 0;
     }
 });
+
+const doAttack = () => {
+    attack = true;
+}
+
+document.addEventListener('click',  doAttack);
 
 const resizeFn = () => {
     characterElm.style.top = `${innerHeight - 100 - characterElm.offsetHeight}px`;
