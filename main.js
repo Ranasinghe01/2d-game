@@ -221,6 +221,7 @@ setInterval(() => {
         if (i === 10) {
             i = 0;
             attack = false;
+            blastBox();
         }
 
     } else if (!run) {
@@ -242,6 +243,10 @@ setInterval(() => {
 const platforms = [
     mainPlatform, smallPlatform1, smallPlatform2, smallPlatform3, smallPlatform4, extraSmallPlatform1, extraSmallPlatform2, extraSmallPlatform3,
     extraSmallPlatform4
+];
+
+const boxes = [
+    box1,box2,box3,box4,box5
 ];
 
 //Initially Fall Down
@@ -365,8 +370,6 @@ function doRun(left) {
             if (characterPosition === platform.offsetTop &&
                 (left + characterElmWidth >= platform.offsetLeft + platform.offsetWidth ||
                     left <= platform.offsetLeft)) {
-                    console.log(platform.offsetLeft);
-                    console.log(characterElm.offsetLeft);
                     startInitialFall();
             }
         }
@@ -406,8 +409,20 @@ addEventListener('keyup', (e) => {
     }
 });
 
-const doAttack = () => {
+function doAttack(){
     attack = true;
+}
+
+function blastBox(){
+    for (const box of boxes) {
+        if (box.offsetLeft <= characterElm.offsetLeft + characterElm.offsetWidth &&
+            box.offsetLeft + box.offsetWidth >= characterElm.offsetLeft &&
+            box.offsetTop - 40 <= characterElm.offsetTop &&
+            box.offsetTop + box.offsetHeight + 20 >= characterElm.offsetTop + characterElm.offsetHeight) {
+            box.remove();
+            console.log("work");
+        }
+    }
 }
 
 document.addEventListener('click',  doAttack);
