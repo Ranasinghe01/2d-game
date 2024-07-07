@@ -146,18 +146,16 @@ extraSmallPlatform4.style.top = '560px';
 const characterElm = document
     .querySelector('#character');
 
-async function startScreen() {
     await new Promise((resolve) => {
         document.querySelector('#start-screen > button')
             .addEventListener('click', async () => {
                 await document.querySelector('html').requestFullscreen({
-                    navigationUI: 'hide'
+                    navigationUI:  'hide'
                 });
-                document.querySelector('#start-screen').classList.add('hide');
+                document.querySelector('#start-screen').remove();
                 resolve();
             });
     });
-
     await new Promise(function (resolve) {
 
         const images = ['/img/BG.png',
@@ -192,8 +190,6 @@ async function startScreen() {
             }
         }
     });
-}
-startScreen();
 
 let dx = 0;         //Run
 let i = 0;          //Rendering
@@ -269,7 +265,10 @@ function startInitialFall() {
             if (characterElm.offsetTop >= platformPosition &&
                 characterElm.offsetLeft + characterElmWidth >= platform.offsetLeft &&
                     characterElm.offsetLeft + characterElmWidth <= platform.offsetLeft + platform.offsetWidth) {
-                    // characterElm.style.top = `${platformPosition}px`;
+                    // console.log("ct" + characterElm.offsetTop);
+                    console.log("pp" + platformPosition);
+                    // console.log("cl"+characterElm.offsetLeft);
+                    // console.log("pl"+platform.offsetLeft);
                     onPlatform = true;
                     break;
             }
@@ -375,6 +374,10 @@ function doRun(left) {
                 (left + characterElmWidth >= platform.offsetLeft + platform.offsetWidth ||
                     left <= platform.offsetLeft)) {
                     startInitialFall();
+                    // console.log("cp" + characterPosition);
+                    // console.log("pp" + platform.offsetTop);
+                    // console.log("cl" + left);
+                    // console.log("ppl" + platform.offsetLeft);
             }
         }
 
@@ -438,7 +441,7 @@ function blastBox(){
 setInterval(() => {
     if (boxesLength === 0) {
         document.querySelector('#victory-screen').classList.remove('hide');
-        document.removeEventListener('click', doAttack);
+        document.removeEventListener("click", doAttack);
 
         document.querySelector('#victory-screen > button').addEventListener('click', () => {
             location.reload();
