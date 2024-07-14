@@ -1,5 +1,64 @@
 import './style.css'
 
+await new Promise((resolve) => {
+    document.querySelector('#start-screen > button')
+        .addEventListener('click', async () => {
+            await document.querySelector('html').requestFullscreen({
+                navigationUI:  'hide'
+            });
+            document.querySelector('#start-screen').remove();
+            resolve();
+        });
+});
+await new Promise(function (resolve) {
+
+    const images = ['/img/BG.png',
+        '/img/tile/Tile (1).png',
+        '/img/tile/Tile (2).png',
+        '/img/tile/Tile (3).png',
+        ...Array(10).fill('/img/character')
+            .flatMap((v, i) => [
+                `${v}/Jump__00${i}.png`,
+                `${v}/Attack__00${i}.png`,
+                `${v}/Idle__00${i}.png`,
+                `${v}/Run__00${i}.png`
+            ])
+    ];
+    for (const image of images) {
+        const img = new Image();
+        img.src = image;
+        img.addEventListener('load', progress);
+    }
+
+    const barElm = document.getElementById('bar');
+    const totalImages = images.length;
+
+    function progress() {
+        images.pop();
+        barElm.style.width = `${100 / totalImages * (totalImages - images.length)}%`
+        if (!images.length) {
+            setTimeout(() => {
+                document.getElementById('overlay').classList.add('hide');
+                resolve();
+            }, 1000);
+        }
+    }
+});
+
+const backgroundMusicElm = document
+    .getElementById('background-music');
+
+function playBackgroundMusic() {
+    backgroundMusicElm.play();
+    backgroundMusicElm.volume = 0.5;
+    backgroundMusicElm.addEventListener("ended", () => {
+        backgroundMusicElm.currentTime = 0;
+        backgroundMusicElm.play();
+    });
+}
+
+playBackgroundMusic();
+
 const mainPlatform = document
     .getElementById('platform');
 
@@ -72,6 +131,20 @@ const tombStone3 = document
 const bush2 = document
     .getElementById('bush2');
 
+const attackMusicElm = document
+    .getElementById('attack-music');
+
+const jumpMusicElm = document
+    .getElementById('jump-music');
+
+const victoryMusicElm = document
+    .getElementById('victory-music');
+
+const boomMusicElm = document
+    .getElementById('boom-music');
+
+const gameOverMusicElm = document
+    .getElementById('game-over-music');
 
 box1.style.top = '25px';
 box1.style.left = '850px';
@@ -142,54 +215,9 @@ extraSmallPlatform3.style.top = '460px';
 extraSmallPlatform4.style.left = '700px';
 extraSmallPlatform4.style.top = '560px';
 
-
 const characterElm = document
     .querySelector('#character');
 
-    await new Promise((resolve) => {
-        document.querySelector('#start-screen > button')
-            .addEventListener('click', async () => {
-                await document.querySelector('html').requestFullscreen({
-                    navigationUI:  'hide'
-                });
-                document.querySelector('#start-screen').remove();
-                resolve();
-            });
-    });
-    await new Promise(function (resolve) {
-
-        const images = ['/img/BG.png',
-            '/img/tile/Tile (1).png',
-            '/img/tile/Tile (2).png',
-            '/img/tile/Tile (3).png',
-            ...Array(10).fill('/img/character')
-                .flatMap((v, i) => [
-                    `${v}/Jump__00${i}.png`,
-                    `${v}/Attack__00${i}.png`,
-                    `${v}/Idle__00${i}.png`,
-                    `${v}/Run__00${i}.png`
-                ])
-        ];
-        for (const image of images) {
-            const img = new Image();
-            img.src = image;
-            img.addEventListener('load', progress);
-        }
-
-        const barElm = document.getElementById('bar');
-        const totalImages = images.length;
-
-        function progress() {
-            images.pop();
-            barElm.style.width = `${100 / totalImages * (totalImages - images.length)}%`
-            if (!images.length) {
-                setTimeout(() => {
-                    document.getElementById('overlay').classList.add('hide');
-                    resolve();
-                }, 1000);
-            }
-        }
-    });
 
 let dx = 0;         //Run
 let i = 0;          //Rendering
@@ -203,6 +231,7 @@ let tmr4Run;
 let tmr4InitialFall;        // Define the interval variable globally
 let characterElmWidth = 65;
 let boxesLength = 5;
+let previousTouch;
 
 //Rendering Function
 setInterval(() => {
@@ -290,6 +319,7 @@ function doJump() {
     if (tmr4Jump) return;
     i = 0;
     jump = true;
+    jumpMusicElm.play();
     const initialTop = characterElm.offsetTop;
 
     tmr4Jump = setInterval(() => {
@@ -418,6 +448,7 @@ addEventListener('keyup', (e) => {
 
 function doAttack(){
     attack = true;
+    attackMusicElm.play();
 }
 document.addEventListener('click',  doAttack);
 
@@ -428,6 +459,7 @@ function blastBox(){
             box.offsetTop - 40 <= characterElm.offsetTop &&
             box.offsetTop + box.offsetHeight + 20 >= characterElm.offsetTop + characterElm.offsetHeight) {
 
+            boomMusicElm.play();
             box.classList.add('animate__animated', 'animate__fadeOut');
 
             box.addEventListener('animationend', () => {
@@ -460,7 +492,21 @@ const resizeFn = () => {
 }
 addEventListener('resize', resizeFn);
 
+characterElm.addEventListener('touchmove', (e)=>{
+    if (!previousTouch){
+        previousTouch = e.touches.item(0);
+        return;
+    }
+    const currentTouch = e.touches.item(0);
+    doRun((currentTouch.clientX - previousTouch.clientX) < 0);
+    if (currentTouch.clientY < previousTouch.clientY) doJump();
+    previousTouch = currentTouch;
+});
 
+characterElm.addEventListener('touchend', (e)=>{
+    previousTouch = null;
+    dx = 0;
+});
 
 
 
