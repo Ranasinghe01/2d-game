@@ -45,20 +45,6 @@ await new Promise(function (resolve) {
     }
 });
 
-const backgroundMusicElm = document
-    .getElementById('background-music');
-
-function playBackgroundMusic() {
-    backgroundMusicElm.play();
-    backgroundMusicElm.volume = 0.5;
-    backgroundMusicElm.addEventListener("ended", () => {
-        backgroundMusicElm.currentTime = 0;
-        backgroundMusicElm.play();
-    });
-}
-
-playBackgroundMusic();
-
 const mainPlatform = document
     .getElementById('platform');
 
@@ -218,7 +204,6 @@ extraSmallPlatform4.style.top = '560px';
 const characterElm = document
     .querySelector('#character');
 
-
 let dx = 0;         //Run
 let i = 0;          //Rendering
 let t = 0;          // Initialize t variable
@@ -232,6 +217,25 @@ let tmr4InitialFall;        // Define the interval variable globally
 let characterElmWidth = 65;
 let boxesLength = 5;
 let previousTouch;
+
+const backgroundMusicElm = document
+    .getElementById('background-music');
+
+let onEndedHandler = () => {
+    backgroundMusicElm.currentTime = 0;
+    backgroundMusicElm.play();
+}
+function playBackgroundMusic() {
+        backgroundMusicElm.play();
+        backgroundMusicElm.volume = 0.5;
+        backgroundMusicElm.addEventListener("ended", onEndedHandler)
+}
+function stopBackgroundMusic() {
+    backgroundMusicElm.pause();
+    backgroundMusicElm.currentTime = 0;
+    backgroundMusicElm.removeEventListener("ended", onEndedHandler)
+}
+playBackgroundMusic();
 
 //Rendering Function
 setInterval(() => {
@@ -472,6 +476,8 @@ function blastBox(){
 
 setInterval(() => {
     if (boxesLength === 0) {
+        stopBackgroundMusic();
+        victoryMusicElm.play();
         document.querySelector('#victory-screen').classList.remove('hide');
         document.removeEventListener("click", doAttack);
 
